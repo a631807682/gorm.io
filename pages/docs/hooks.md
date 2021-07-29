@@ -147,7 +147,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) error {
   // Modify current operation through tx.Statement, e.g:
-  tx.Statement.Select("Name", "Age")
+  tx.Statement.Select([]string{"Name", "Age"})
   tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
 
   // tx is new session mode with the `NewDB` option

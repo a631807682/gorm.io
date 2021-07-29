@@ -20,7 +20,7 @@ result.RowsAffected // returns inserted records count
 Create a record and assign a value to the fields specified.
 
 ```go
-db.Select("Name", "Age", "CreatedAt").Create(&user)
+db.Select([]string{"Name", "Age", "CreatedAt"}).Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 

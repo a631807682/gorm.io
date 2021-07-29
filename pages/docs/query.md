@@ -245,7 +245,7 @@ For more complicated SQL queries. please also refer to [Group Conditions in Adva
 `Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
 
 ```go
-db.Select("name", "age").Find(&users)
+db.Select([]string{"name", "age"}).Find(&users)
 // SELECT name, age FROM users;
 
 db.Select([]string{"name", "age"}).Find(&users)
@@ -390,7 +390,7 @@ type Result struct {
 }
 
 var result Result
-db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
+db.Table("users").Select([]string{"name", "age"}).Where("name = ?", "Antonio").Scan(&result)
 
 // Raw SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)

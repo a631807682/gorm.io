@@ -55,7 +55,7 @@ You can also use GORM API to prepare SQL with [DryRun Mode](session.html), and e
 By default GORM select all fields when querying, you can use `Select` to specify fields you want
 
 ```go
-db.Select("Name", "Age").Find(&Users{})
+db.Select([]string{"Name", "Age"}).Find(&Users{})
 ```
 
 Or define a smaller API struct to use the [smart select fields feature](advanced_query.html)

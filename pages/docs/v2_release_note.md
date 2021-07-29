@@ -235,7 +235,7 @@ db.Where(
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 
 // From SubQuery
-db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+db.Table("(?) as u", db.Model(&User{}).Select([]string{"name", "age"})).Where("age = ?", 18}).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE age = 18
 
 // Update SubQuery
@@ -481,7 +481,7 @@ You are allowed to delete selected has one/has many/many2many relations with `Se
 db.Select("Account").Delete(&user)
 
 // delete user's Orders, CreditCards relations when deleting user
-db.Select("Orders", "CreditCards").Delete(&user)
+db.Select([]string{"Orders", "CreditCards"}).Delete(&user)
 
 // delete user's has one/many/many2many relations when deleting user
 db.Select(clause.Associations).Delete(&user)
@@ -650,7 +650,7 @@ Before/After Create/Update/Save/Find/Delete must be defined as a method of type 
 ```go
 func (user *User) BeforeCreate(tx *gorm.DB) error {
   // Modify current operation through tx.Statement, e.g:
-  tx.Statement.Select("Name", "Age")
+  tx.Statement.Select([]string{"Name", "Age"})
   tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
 
   // Operations based on tx will runs inside same transaction without clauses of current one
@@ -681,8 +681,8 @@ db.Model(&user).Update("Name", "Jinzhu") // update field `Name` to `Jinzhu`
 db.Model(&user).Updates(map[string]interface{}{"name": "Jinzhu", "admin": false}) // update field `Name` to `Jinzhu`, `Admin` to false
 db.Model(&user).Updates(User{Name: "Jinzhu", Admin: false}) // Update none zero fields when using struct as argument, will only update `Name` to `Jinzhu`
 
-db.Model(&user).Select("Name", "Admin").Updates(User{Name: "Jinzhu"}) // update selected fields `Name`, `Admin`，`Admin` will be updated to zero value (false)
-db.Model(&user).Select("Name", "Admin").Updates(map[string]interface{}{"Name": "Jinzhu"}) // update selected fields exists in the map, will only update field `Name` to `Jinzhu`
+db.Model(&user).Select([]string{"Name", "Admin"}).Updates(User{Name: "Jinzhu"}) // update selected fields `Name`, `Admin`，`Admin` will be updated to zero value (false)
+db.Model(&user).Select([]string{"Name", "Admin"}).Updates(map[string]interface{}{"Name": "Jinzhu"}) // update selected fields exists in the map, will only update field `Name` to `Jinzhu`
 
 // Attention: `Changed` will only check the field value of `Update` / `Updates` equals `Model`'s field value, it returns true if not equal and the field will be saved
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"}) // Changed("Name") => true
@@ -703,7 +703,7 @@ Plugin callbacks also need be defined as a method of type `func(tx *gorm.DB) err
 When updating with struct, GORM V2 allows to use `Select` to select zero-value fields to update them, for example:
 
 ```go
-db.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age: 0})
+db.Model(&user).Select([]string{"Role", "Age"}).Update(User{Name: "jinzhu", Role: "", Age: 0})
 ```
 
 #### Associations

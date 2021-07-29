@@ -67,7 +67,7 @@ db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "ag
 // UPDATE users SET age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
 // Select with Struct (select zero value fields)
-db.Model(&user).Select("Name", "Age").Updates(User{Name: "new_name", Age: 0})
+db.Model(&user).Select([]string{"Name", "Age"}).Updates(User{Name: "new_name", Age: 0})
 // UPDATE users SET name='new_name', age=0 WHERE id=111;
 
 // Select all fields (select all fields include zero value fields)
@@ -206,7 +206,7 @@ db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE id = 111;
 
 // Update selected columns
-db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
+db.Model(&user).Select([]string{"name", "age"}).UpdateColumns(User{Name: "hello", Age: 0})
 // UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
 

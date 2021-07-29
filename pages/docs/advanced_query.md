@@ -78,7 +78,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 GORM allows you using subquery in FROM clause with method `Table`, for example:
 
 ```go
-db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+db.Table("(?) as u", db.Model(&User{}).Select([]string{"name", "age"})).Where("age = ?", 18}).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
 
 subQuery1 := db.Model(&User{}).Select("name")
@@ -321,8 +321,8 @@ db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
 // Requesting more than one column, use `Scan` or `Find` like this:
-db.Select("name", "age").Scan(&users)
-db.Select("name", "age").Find(&users)
+db.Select([]string{"name", "age"}).Scan(&users)
+db.Select([]string{"name", "age"}).Find(&users)
 ```
 
 ## Scopes

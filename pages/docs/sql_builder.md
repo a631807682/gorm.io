@@ -90,7 +90,7 @@ Get result as `*sql.Row`
 
 ```go
 // Use GORM API build SQL
-row := db.Table("users").Where("name = ?", "jinzhu").Select("name", "age").Row()
+row := db.Table("users").Where("name = ?", "jinzhu").Select([]string{"name", "age"}).Row()
 row.Scan(&name, &age)
 
 // Use Raw SQL
